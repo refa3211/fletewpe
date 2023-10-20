@@ -95,7 +95,7 @@ def search_devices(broadcast=None):
     while True:
         try:
             (data, address) = s.recvfrom(1024)
-            print(f'data: {data}\nadderss: {address[0]}')
+            # print(f'data: {data}\nadderss: {address[0]}')
 
             if len(data) == 0:
                 continue
@@ -105,7 +105,7 @@ def search_devices(broadcast=None):
 
             resp = json.loads(raw_json)
             pack = json.loads(decrypt_generic(resp['pack']))
-            print(f'pack: {pack}')
+            # print(f'pack: {pack}')
             with open('ac.json', 'w') as file:
                 json.dump(pack, file)
 
@@ -158,14 +158,14 @@ def bind_device(search_result) -> tuple[Any, Any, Any, Any]:
     result = send_data(search_result.ip, 7000, bytes(request, encoding='utf-8'))
 
     response = json.loads(result)
-    print(f'response: {response}')
+    # print(f'response: {response}')
     if response["t"] == "pack":
         pack = response["pack"]
         pack_decrypted = decrypt_generic(pack)
-        print(f'pack_decrypted: {pack_decrypted}\n')
+        # print(f'pack_decrypted: {pack_decrypted}\n')
 
         bind_resp = json.loads(pack_decrypted)
-        print(f'bind_resp: {bind_resp}')
+        # print(f'bind_resp: {bind_resp}')
 
         if 't' in bind_resp and bind_resp["t"].lower() == "bindok":
             key = bind_resp['key']
