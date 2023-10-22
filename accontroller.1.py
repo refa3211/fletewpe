@@ -1,3 +1,5 @@
+from time import sleep
+
 import flet as ft
 from ewpe import search_devices, bind_device
 
@@ -9,7 +11,7 @@ def main(page: ft.Page):
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
     # Greeting Text
-    hello = ft.Text(value="Hello, world!", color="#4CAF50", size=50, text_align=ft.TextAlign.CENTER)
+    hello = ft.Text(value="Ac Control APP", color="#4CAF50", size=50, text_align=ft.TextAlign.CENTER)
     page.add(hello)
 
     # Input field for Broadcast IP
@@ -22,6 +24,11 @@ def main(page: ft.Page):
     )
     page.add(broadcast)
 
+    # ProgressBar
+    pb = ft.ProgressBar(width=300, height=16, color='#4CAF50')
+    page.add(pb)
+    pb.visible = False  # Initially hide the progress bar
+
     # Container for Tabs
     t = ft.Tabs(
         selected_index=0,
@@ -31,46 +38,53 @@ def main(page: ft.Page):
     )
     page.add(t)
 
-    # Mock function to increase/decrease temperature
+    mock_temperature = ft.TextField(value="25", text_align=ft.TextAlign.RIGHT, width=50)
+
+    # Mock function to increase/decrease temperature (unused currently)
     def adjust_temperature(value):
         return value
 
+    def minus_click(e):
+        mock_temperature.value = str(int(mock_temperature.value) - 1)
+        print(mock_temperature.value)
+        page.update()
+
+    def plus_click(e):
+        mock_temperature.value = str(int(mock_temperature.value) + 1)
+        print(mock_temperature.value)
+        page.update()
+
     # Search button to search for AC devices
     def button_clicked(e):
+        sleep(2)
+        # Show ProgressBar and update page
+        pb.visible = True
+        page.update()
+
         # Clear existing tabs
         t.tabs.clear()
 
         # Iterate through devices and add information to tabs
-        for device in search_devices():
-            mock_temperature = 25
-
-            # Decrease temperature button
+        # for device in search_devices():
+        for device in range(1, 5):  # Using a mock loop for demonstration
             decrease_button = ft.IconButton(
                 icon=ft.icons.REMOVE,
                 icon_color='#FFC107',
-                on_click=lambda e, temp=mock_temperature: adjust_temperature(temp - 1)
+                on_click=minus_click
             )
-
-            # Increase temperature button
             increase_button = ft.IconButton(
                 icon=ft.icons.ADD,
                 icon_color='#FFC107',
-                on_click=lambda e, temp=mock_temperature: adjust_temperature(temp + 1)
+                on_click=plus_click
             )
-
-            # AC Controls
             ac_column = ft.Column(
                 controls=[
                     ft.Text(
-                        f"AC-IP: {device.ip}, AC ID: {device.id}, AC Name: {device.name}",
+                        f"AC-IP: {device}, AC ID: {device}, AC Name: {device}",
                         size=20,
                         text_align=ft.TextAlign.CENTER,
                     ),
-                    ft.Text(
-                        f"Temperature: {mock_temperature}°C",
-                        size=24,
-                        text_align=ft.TextAlign.CENTER,
-                    ),
+                    mock_temperature,
                     ft.Row(
                         controls=[decrease_button, increase_button],
                         alignment=ft.alignment.center
@@ -79,14 +93,16 @@ def main(page: ft.Page):
                 alignment=ft.alignment.center,
                 spacing=20
             )
-
-            tab = ft.Tab(text=device.name, icon=ft.icons.AC_UNIT, content=ac_column)
+            tab = ft.Tab(text=device, icon=ft.icons.AC_UNIT, content=ac_column)
             t.tabs.append(tab)
 
         t.selected_index = 0
+
+        # Hide ProgressBar and update page at the end
+        pb.visible = False
         page.update()
 
-    search_button = ft.ElevatedButton(  # Keeping this as an ElevatedButton as it has a text label
+    search_button = ft.ElevatedButton(
         text="Search AC's",
         width=150,
         height=60,
@@ -95,6 +111,7 @@ def main(page: ft.Page):
         on_click=button_clicked
     )
     page.add(search_button)
+    page.update()
 
 
 ft.app(target=main)
