@@ -57,7 +57,9 @@ def create_cipher(key):
 def decrypt(pack_encoded, key):
     decryptor = create_cipher(key).decryptor()
     pack_decoded = base64.b64decode(pack_encoded)
+    print(f'\npack_decoded: {pack_decoded}')
     pack_decrypted = decryptor.update(pack_decoded) + decryptor.finalize()
+    print(f'pack_decrypted: {pack_decrypted}')
     pack_unpadded = pack_decrypted[0:pack_decrypted.rfind(b'}') + 1]
     return pack_unpadded.decode('utf-8')
 
@@ -81,7 +83,7 @@ def encrypt_generic(pack):
 
 def search_devices(broadcast=None):
     if broadcast is None:
-        broadcast = '192.168.0.255'
+        broadcast = '192.168.1.255'
     print(f'Searching for devices using broadcast address: {broadcast}')
 
     s = socket.socket(type=socket.SOCK_DGRAM, proto=socket.IPPROTO_UDP)
@@ -95,18 +97,18 @@ def search_devices(broadcast=None):
     while True:
         try:
             (data, address) = s.recvfrom(1024)
-            # print(f'data: {data}\nadderss: {address[0]}')
+            print(f'data: {data}\nadderss: {address[0]}')
 
             if len(data) == 0:
                 continue
 
             raw_json = data[0:data.rfind(b"}") + 1]
 
-
             resp = json.loads(raw_json)
+            print(f'resp: {resp}')
             pack = json.loads(decrypt_generic(resp['pack']))
-            # print(f'pack: {pack}')
-            with open('ac.json', 'w') as file:
+            print(f'pack: {pack}')
+            with open('ac.json', 'a') as file:
                 json.dump(pack, file)
 
             cid = pack['cid'] if 'cid' in pack and len(pack['cid']) > 0 else \
@@ -126,51 +128,29 @@ def search_devices(broadcast=None):
 
 
 def bind_device(search_result) -> tuple[Any, Any, Any, Any]:
-    keys = {
-        'ac1': {
-            'ip': '',
-            'mac': '',
-            'key': ''
-        },
-        'ac2': {
-            'ip': '',
-            'mac': '',
-            'key': ''
-        },
-        'ac3': {
-            'ip': '',
-            'mac': '',
-            'key': ''
-        },
-        'ac4': {
-            'ip': '',
-            'mac': '',
-            'key': ''
-        }
-    }
 
     print(f'Binding device: {search_result.ip} ({search_result.name}, ID: {search_result.id})\n')
 
     pack = '{"mac":"%s","t":"bind","uid":0}' % search_result.id
     pack_encrypted = encrypt_generic(pack)
+    print(f'pack_encrypted: {pack_encrypted}')
 
     request = create_request(search_result.id, pack_encrypted, 1)
     result = send_data(search_result.ip, 7000, bytes(request, encoding='utf-8'))
 
     response = json.loads(result)
-    # print(f'response: {response}')
+    print(f'response: {response}')
     if response["t"] == "pack":
         pack = response["pack"]
         pack_decrypted = decrypt_generic(pack)
-        # print(f'pack_decrypted: {pack_decrypted}\n')
+        print(f'pack_decrypted: {pack_decrypted}\n')
 
         bind_resp = json.loads(pack_decrypted)
-        # print(f'bind_resp: {bind_resp}')
+        print(f'bind_resp: {bind_resp}')
 
         if 't' in bind_resp and bind_resp["t"].lower() == "bindok":
             key = bind_resp['key']
-            # print('Bind to %s succeeded, key = %s' % (search_result.id, key))
-            # keys.update(key)
+            print('Bind to %s succeeded, key = %s' % (search_result.id, key))
             return key
 
 
@@ -183,7 +163,7 @@ def get_param(id, key, ipclient, params=None):
 
     pack = f'{{"cols":[{cols}],"mac":"{id}","t":"status"}}'
     pack_encrypted = encrypt(pack, key)
-    # print(f'pack encrypted\n {pack_encrypted} \n\n{key}')
+    print(f'pack encrypted\n {pack_encrypted} \n\n{key}')
 
     request = '{"cid":"app","i":0,"pack":"%s","t":"pack","tcid":"%s","uid":0}' % (pack_encrypted, id)
     result = send_data(ipclient, 7000, bytes(request, encoding='utf-8'))
@@ -194,6 +174,7 @@ def get_param(id, key, ipclient, params=None):
 
         pack_decrypted = decrypt(pack, key)
         pack_json = json.loads(pack_decrypted)
+        print(f'pack_json: {pack_json}')
 
         for key, value in zip(pack_json['cols'], pack_json['dat']):
             print(f'{key} : {value}')
@@ -226,7 +207,7 @@ def set_param(id, key, ipclient, params=""):
         pack_decrypted = decrypt(pack, key)
         pack_json = json.loads(pack_decrypted)
 
-        #dump data to file
+        # dump data to file
         # pack_json.json()
 
         if pack_json['r'] == 200:

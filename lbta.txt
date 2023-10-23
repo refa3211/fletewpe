@@ -1,0 +1,42 @@
+Binding device: 192.168.1.54 (c67201a1, ID: 502cc67201a1)
+
+Bind to 502cc67201a1 succeeded, key = 4No7Qr0Tu3Wx6Za9
+
+
+
+Searching for devices using broadcast address: 192.168.1.255
+data: b'{"t":"pack","i":1,"uid":0,"cid":"502cc671f6df","tcid":"483b0111e1cb","pack":"LP24Ek0OaYogxs3iQLjL4PK1wM6wUtq3XGdJWnXhheKMa9lM2RqI/KytvJ32IsGSZXrOr+MakVzzXHbghPeyijnWMzaLQaaw1aFXlE9k71L0cMm8bsr/y4FkxumpRg1t0xV8+/m47OTBNaX/8aUl1U9tpO2HRla9vNGExeW1IxpzMQoS41XpnORSG7+GfavhnKYbt0iIDsdp8/ftXlA9HqvR3DN4m7Q7cBrEvvMMm2i80gq9HxK8Loa8WXVjgZcP4Vf5MjKxa60Xt5J1oI+lsxUuXTHkgunLg76WWGy+euo="}'
+adderss: 192.168.1.56
+resp: {'t': 'pack', 'i': 1, 'uid': 0, 'cid': '502cc671f6df', 'tcid': '483b0111e1cb', 'pack': 'LP24Ek0OaYogxs3iQLjL4PK1wM6wUtq3XGdJWnXhheKMa9lM2RqI/KytvJ32IsGSZXrOr+MakVzzXHbghPeyijnWMzaLQaaw1aFXlE9k71L0cMm8bsr/y4FkxumpRg1t0xV8+/m47OTBNaX/8aUl1U9tpO2HRla9vNGExeW1IxpzMQoS41XpnORSG7+GfavhnKYbt0iIDsdp8/ftXlA9HqvR3DN4m7Q7cBrEvvMMm2i80gq9HxK8Loa8WXVjgZcP4Vf5MjKxa60Xt5J1oI+lsxUuXTHkgunLg76WWGy+euo='}
+
+pack_decoded: b',\xfd\xb8\x12M\x0ei\x8a \xc6\xcd\xe2@\xb8\xcb\xe0\xf2\xb5\xc0\xce\xb0R\xda\xb7\\gIZu\xe1\x85\xe2\x8ck\xd9L\xd9\x1a\x88\xfc\xac\xad\xbc\x9d\xf6"\xc1\x92ez\xce\xaf\xe3\x1a\x91\\\xf3\\v\xe0\x84\xf7\xb2\x8a9\xd636\x8bA\xa6\xb0\xd5\xa1W\x94Od\xefR\xf4p\xc9\xbcn\xca\xff\xcb\x81d\xc6\xe9\xa9F\rm\xd3\x15|\xfb\xf9\xb8\xec\xe4\xc15\xa5\xff\xf1\xa5%\xd5Om\xa4\xed\x87FV\xbd\xbc\xd1\x84\xc5\xe5\xb5#\x1as1\n\x12\xe3U\xe9\x9c\xe4R\x1b\xbf\x86}\xab\xe1\x9c\xa6\x1b\xb7H\x88\x0e\xc7i\xf3\xf7\xed^P=\x1e\xab\xd1\xdc3x\x9b\xb4;p\x1a\xc4\xbe\xf3\x0c\x9bh\xbc\xd2\n\xbd\x1f\x12\xbc.\x86\xbcYuc\x81\x97\x0f\xe1W\xf922\xb1k\xad\x17\xb7\x92u\xa0\x8f\xa5\xb3\x15.]1\xe4\x82\xe9\xcb\x83\xbe\x96Xl\xbez\xea'
+pack_decrypted: b'{"t":"dev","cid":"502cc671f6df","bc":"000000000000000000000000000000","brand":"gree","catalog":"gree","mac":"502cc671f6df","mid":"10001","model":"gree","name":"c671f6df","series":"gree","vender":"1","ver":"V1.2.1","lock":0}\x01'
+pack: {'t': 'dev', 'cid': '502cc671f6df', 'bc': '000000000000000000000000000000', 'brand': 'gree', 'catalog': 'gree', 'mac': '502cc671f6df', 'mid': '10001', 'model': 'gree', 'name': 'c671f6df', 'series': 'gree', 'vender': '1', 'ver': 'V1.2.1', 'lock': 0}
+data: b'{"t":"pack","i":1,"uid":0,"cid":"502cc6778e58","tcid":"51297fbaa8b8","pack":"LP24Ek0OaYogxs3iQLjL4Oh23+i3vIoXVYwTeoxofZ3HP5iqGvdKnnPsqk7fdn1H7dtSGAuZ5kwdBUjQrRkkAv71G2FmYK3xPk72cBKHnhtyvqR20dX36hbyU9+7jqqmCT0RWc4y61A5IbzI899slTJDlbBbEwGn83j2O6knoW0dXjEOFRt5CqrQlTTD2Jy+UhstPYSgoTyCkAKM/lkaYBqeXSXXEzoJl7jYZ4lx5Teyo8PdMQ5nBThFSUfWGtvi6coTV+mTVr+XX1T+tBQaQw=="}\n'
+adderss: 192.168.1.38
+resp: {'t': 'pack', 'i': 1, 'uid': 0, 'cid': '502cc6778e58', 'tcid': '51297fbaa8b8', 'pack': 'LP24Ek0OaYogxs3iQLjL4Oh23+i3vIoXVYwTeoxofZ3HP5iqGvdKnnPsqk7fdn1H7dtSGAuZ5kwdBUjQrRkkAv71G2FmYK3xPk72cBKHnhtyvqR20dX36hbyU9+7jqqmCT0RWc4y61A5IbzI899slTJDlbBbEwGn83j2O6knoW0dXjEOFRt5CqrQlTTD2Jy+UhstPYSgoTyCkAKM/lkaYBqeXSXXEzoJl7jYZ4lx5Teyo8PdMQ5nBThFSUfWGtvi6coTV+mTVr+XX1T+tBQaQw=='}
+
+pack_decoded: b",\xfd\xb8\x12M\x0ei\x8a \xc6\xcd\xe2@\xb8\xcb\xe0\xe8v\xdf\xe8\xb7\xbc\x8a\x17U\x8c\x13z\x8ch}\x9d\xc7?\x98\xaa\x1a\xf7J\x9es\xec\xaaN\xdfv}G\xed\xdbR\x18\x0b\x99\xe6L\x1d\x05H\xd0\xad\x19$\x02\xfe\xf5\x1baf`\xad\xf1>N\xf6p\x12\x87\x9e\x1br\xbe\xa4v\xd1\xd5\xf7\xea\x16\xf2S\xdf\xbb\x8e\xaa\xa6\t=\x11Y\xce2\xebP9!\xbc\xc8\xf3\xdfl\x952C\x95\xb0[\x13\x01\xa7\xf3x\xf6;\xa9'\xa1m\x1d^1\x0e\x15\x1by\n\xaa\xd0\x954\xc3\xd8\x9c\xbeR\x1b-=\x84\xa0\xa1<\x82\x90\x02\x8c\xfeY\x1a`\x1a\x9e]%\xd7\x13:\t\x97\xb8\xd8g\x89q\xe57\xb2\xa3\xc3\xdd1\x0eg\x058EIG\xd6\x1a\xdb\xe2\xe9\xca\x13W\xe9\x93V\xbf\x97_T\xfe\xb4\x14\x1aC"
+pack_decrypted: b'{"t":"dev","cid":"502cc6778e58","bc":"","brand":"gree","catalog":"gree","mac":"502cc6778e58","mid":"10001","model":"gree","name":"c6778e58","series":"gree","vender":"1","ver":"V1.2.1","lock":0}\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f'
+pack: {'t': 'dev', 'cid': '502cc6778e58', 'bc': '', 'brand': 'gree', 'catalog': 'gree', 'mac': '502cc6778e58', 'mid': '10001', 'model': 'gree', 'name': 'c6778e58', 'series': 'gree', 'vender': '1', 'ver': 'V1.2.1', 'lock': 0}
+Search finished, found 2 device(s)
+Binding device: 192.168.1.56 (c671f6df, ID: 502cc671f6df)
+
+response: {'t': 'pack', 'i': 1, 'uid': 0, 'cid': '502cc671f6df', 'tcid': '483b0111e1cb', 'pack': 'T2tGu9JTsZPLMhoPO/mBctuhP5CobMbwZQpAF1VMdlMR5HjZvXUVLvG3FW/zs5QYoyub6lgxzl8cCh6tRNii6IzD1k6jjxiwE2rMrTg7Xnk='}
+
+pack_decoded: b'OkF\xbb\xd2S\xb1\x93\xcb2\x1a\x0f;\xf9\x81r\xdb\xa1?\x90\xa8l\xc6\xf0e\n@\x17ULvS\x11\xe4x\xd9\xbdu\x15.\xf1\xb7\x15o\xf3\xb3\x94\x18\xa3+\x9b\xeaX1\xce_\x1c\n\x1e\xadD\xd8\xa2\xe8\x8c\xc3\xd6N\xa3\x8f\x18\xb0\x13j\xcc\xad8;^y'
+pack_decrypted: b'{"t":"bindok","mac":"502cc671f6df","key":"1Wx4Za7Cd0Fg3I6L","r":200}\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c'
+pack_decrypted: {"t":"bindok","mac":"502cc671f6df","key":"1Wx4Za7Cd0Fg3I6L","r":200}
+
+bind_resp: {'t': 'bindok', 'mac': '502cc671f6df', 'key': '1Wx4Za7Cd0Fg3I6L', 'r': 200}
+Bind to 502cc671f6df succeeded, key = 1Wx4Za7Cd0Fg3I6L
+Binding device: 192.168.1.38 (c6778e58, ID: 502cc6778e58)
+
+response: {'t': 'pack', 'i': 1, 'uid': 0, 'cid': '502cc6778e58', 'tcid': '51297fbaa8b8', 'pack': 'T2tGu9JTsZPLMhoPO/mBchVti9HNnQs/Xj2TpbPhjxHjC8MQl8nmYLnjzO7quRqqC7ZHG80bP23r0HJUrRvYQozD1k6jjxiwE2rMrTg7Xnk='}
+
+pack_decoded: b'OkF\xbb\xd2S\xb1\x93\xcb2\x1a\x0f;\xf9\x81r\x15m\x8b\xd1\xcd\x9d\x0b?^=\x93\xa5\xb3\xe1\x8f\x11\xe3\x0b\xc3\x10\x97\xc9\xe6`\xb9\xe3\xcc\xee\xea\xb9\x1a\xaa\x0b\xb6G\x1b\xcd\x1b?m\xeb\xd0rT\xad\x1b\xd8B\x8c\xc3\xd6N\xa3\x8f\x18\xb0\x13j\xcc\xad8;^y'
+pack_decrypted: b'{"t":"bindok","mac":"502cc6778e58","key":"SZgO3Dlt4i9w4l9A","r":200}\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c\x0c'
+pack_decrypted: {"t":"bindok","mac":"502cc6778e58","key":"SZgO3Dlt4i9w4l9A","r":200}
+
+bind_resp: {'t': 'bindok', 'mac': '502cc6778e58', 'key': 'SZgO3Dlt4i9w4l9A', 'r': 200}
+Bind to 502cc6778e58 succeeded, key = SZgO3Dlt4i9w4l9A

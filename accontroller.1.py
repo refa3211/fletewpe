@@ -1,4 +1,5 @@
 from time import sleep
+import matplotlib.pyplot as plt
 
 import flet as ft
 
@@ -40,12 +41,18 @@ def main(page: ft.Page):
         width=440,
         indicator_tab_size=True,
         scrollable=True,
-
         tabs=[]
     )
     page.add(t)
 
-    mock_temperature = ft.TextField(value="25", text_align=ft.TextAlign.RIGHT, width=50, )
+    mock_temperature = ft.TextField(value=f'25', border_width=0,
+                                    text_size=25, text_align=ft.TextAlign.CENTER)
+
+    dd = ft.Dropdown(text_size=20, options=[
+        ft.dropdown.Option("Cool"),
+        ft.dropdown.Option("Heat"),
+        ft.dropdown.Option("Dry"),
+    ])
 
     def minus_click(e):
         mock_temperature.value = str(int(mock_temperature.value) - 1)
@@ -54,6 +61,10 @@ def main(page: ft.Page):
     def plus_click(e):
         mock_temperature.value = str(int(mock_temperature.value) + 1)
         page.update()
+
+    def toggle_icon_button(e):
+        e.control.selected = not e.control.selected
+        e.control.update()
 
     # Search button to search for AC devices
     def button_clicked(e):
@@ -64,21 +75,32 @@ def main(page: ft.Page):
         # Using a mock loop for demonstration
         for device in range(1, 5):
             sleep(0.1)
-            sw = ft.Switch(label="AC ON/OFF", value=False)
-            decrease_button = ft.IconButton(icon=ft.icons.REMOVE, icon_color='#FFC107', on_click=minus_click)
-            increase_button = ft.IconButton(icon=ft.icons.ADD, icon_color='#FFC107', on_click=plus_click)
+            sw = ft.Switch(value=False)
+            decrease_button = ft.IconButton(icon=ft.icons.REMOVE, icon_size=50, icon_color='#FFC107',
+                                            on_click=minus_click)
+            increase_button = ft.IconButton(icon=ft.icons.ADD, icon_size=50, icon_color='#FFC107', on_click=plus_click)
+            toggleonoff = ft.IconButton(
+                icon=ft.icons.POWER_SETTINGS_NEW,
+                selected_icon=ft.icons.POWER_SETTINGS_NEW,
+                on_click=toggle_icon_button,
+                selected=False,
+                icon_size=50,
+                style=ft.ButtonStyle(bgcolor={"selected": ft.colors.BLUE_200, "": ft.colors.WHITE}),
+            )
 
             ac_column = ft.Column(
                 controls=[
 
-                    ft.Text(f"AC-IP: {device}, AC ID: {device}, AC Name: {device}", size=20, text_align=ft.alignment.center),
-                    ft.Row(controls=[sw], alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Text(f"AC-IP: {device}, AC ID: {device}, AC Name: {device}", size=20,
+                            text_align=ft.alignment.center),
                     ft.Row(controls=[mock_temperature], alignment=ft.MainAxisAlignment.CENTER),
-                    ft.Row(controls=[decrease_button, increase_button], alignment=ft.MainAxisAlignment.CENTER)
+                    ft.Row(controls=[decrease_button, increase_button], alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Row(controls=[toggleonoff], alignment=ft.MainAxisAlignment.CENTER),
 
                 ],
                 spacing=20
             )
+
             page.update()
 
             tab = ft.Tab(text=str(device), icon=ft.icons.AC_UNIT, content=ac_column)
