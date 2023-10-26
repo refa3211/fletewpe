@@ -1,33 +1,30 @@
+import flet
+import fontTools.varLib.iup
 import flet as ft
+from flet import Dropdown, Page, colors, dropdown
 
 
-def main(page: ft.Page):
-    page.title = "Card Example"
-    page.window_width = 450
-    ft.Page.window_max_width = 500
+def main(page: Page):
+    page.theme_mode = 'light'
+    page.padding = 50
     page.add(
-        ft.Card(
-            content=ft.Container(
-                content=ft.Column(
-                    [
-                        ft.ListTile(
-                            leading=ft.Icon(ft.icons.ALBUM),
-                            title=ft.Text("The Enchanted Nightingale"),
-                            subtitle=ft.Text(
-                                "Music by Julie Gable. Lyrics by Sidney Stein."
-                            ),
-                        ),
-                        ft.Row(
-                            [ft.TextButton("Buy tickets"), ft.TextButton("Listen")],
-                            alignment=ft.MainAxisAlignment.END,
-                        ),
-                    ]
-                ),
-                width=400,
-                padding=50,
-            )
+        Dropdown(
+            options=[
+                dropdown.Option("a", "Item A"),
+                dropdown.Option("b", "Item B"),
+                dropdown.Option("c", "Item C"),
+                dropdown.Option(f'{ft.icons.BED}'),
+            ],
+            border_radius=30,
+            filled=True,
+            width=100,
+            border_color=colors.TRANSPARENT,
+            bgcolor=colors.BLACK12,
+            focused_bgcolor=colors.BLUE_100,
+            icon=ft.icons.BED
+            # color=colors.TRANSPARENT
         )
     )
 
 
-ft.app(target=main)
+flet.app(target=main)

@@ -46,13 +46,16 @@ def main(page: ft.Page):
     page.add(t)
 
     mock_temperature = ft.TextField(value=f'25', border_width=0,
-                                    text_size=25, text_align=ft.TextAlign.CENTER)
+                                    text_size=25, width=55, text_align=ft.TextAlign.CENTER)
 
-    dd = ft.Dropdown(text_size=20, options=[
-        ft.dropdown.Option("Cool"),
-        ft.dropdown.Option("Heat"),
-        ft.dropdown.Option("Dry"),
-    ])
+    dd = ft.Dropdown(text_size=20, width=75, hint_text='Mode',
+                     height=60, border_width=0.2,
+                     options=[
+                         ft.dropdown.Option("Auto"),
+                         ft.dropdown.Option("Dry"),
+                         ft.dropdown.Option("Cool"),
+                         ft.dropdown.Option("Heat"),
+                     ])
 
     def minus_click(e):
         mock_temperature.value = str(int(mock_temperature.value) - 1)
@@ -93,12 +96,16 @@ def main(page: ft.Page):
 
                     ft.Text(f"AC-IP: {device}, AC ID: {device}, AC Name: {device}", size=20,
                             text_align=ft.alignment.center),
-                    ft.Row(controls=[mock_temperature], alignment=ft.MainAxisAlignment.CENTER),
-                    ft.Row(controls=[decrease_button, increase_button], alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Row(controls=[dd], alignment=ft.MainAxisAlignment.CENTER),
+
+                    ft.Row(controls=[decrease_button, mock_temperature, increase_button],
+                           alignment=ft.MainAxisAlignment.CENTER),
                     ft.Row(controls=[toggleonoff], alignment=ft.MainAxisAlignment.CENTER),
 
                 ],
+
                 spacing=20
+
             )
 
             page.update()
