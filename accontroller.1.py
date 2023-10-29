@@ -1,5 +1,5 @@
 from time import sleep
-import matplotlib.pyplot as plt
+
 
 import flet as ft
 
