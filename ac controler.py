@@ -1,8 +1,15 @@
+from time import sleep
+
+
 import flet as ft
-from ewpe import search_devices, bind_device
+
+
+from ewpe import search_devices, bind_device  # Commented for demonstration
 
 
 def main(page: ft.Page):
+    page.window_width = 500
+
     # Configure the page
     page.theme_mode = 'light'
     page.vertical_alignment = ft.MainAxisAlignment.CENTER
@@ -22,94 +29,98 @@ def main(page: ft.Page):
     )
     page.add(broadcast)
 
+    # ProgressBar
+    pb = ft.ProgressBar(width=300, height=10, color='#4CAF50')
+    page.add(pb)
+    pb.visible = False  # Initially hide the progress bar
+
     # Container for Tabs
     t = ft.Tabs(
         selected_index=0,
         animation_duration=300,
-        tabs=[],
-        expand=1
+        # width=440,
+        indicator_tab_size=True,
+        scrollable=False,
+        tabs=[]
     )
     page.add(t)
 
-    mock_temperature = ft.TextField(value="25", text_align=ft.TextAlign.RIGHT, width=50)
+    mock_temperature = ft.TextField(value=f'25', border_width=0,
+                                    text_size=25, width=55, text_align=ft.TextAlign.CENTER)
 
-    # Mock function to increase/decrease temperature
-    def adjust_temperature(value):
-        return value
+    dd = ft.Dropdown(text_size=20, width=75, hint_text='Mode',
+                     height=60, border_width=0.2,
+                     options=[
+                         ft.dropdown.Option("Auto"),
+                         ft.dropdown.Option("Dry"),
+                         ft.dropdown.Option("Cool"),
+                         ft.dropdown.Option("Heat"),
+                     ])
 
     def minus_click(e):
         mock_temperature.value = str(int(mock_temperature.value) - 1)
-        print(mock_temperature.value)
         page.update()
 
     def plus_click(e):
         mock_temperature.value = str(int(mock_temperature.value) + 1)
-        print(mock_temperature.value)
         page.update()
+
+    def toggle_icon_button(e):
+        e.control.selected = not e.control.selected
+        e.control.update()
 
     # Search button to search for AC devices
     def button_clicked(e):
-        # Clear existing tabs
+        pb.visible = True
+        page.update()
         t.tabs.clear()
 
-        # Iterate through devices and add information to tabs
-        for device in search_devices():
+        # Using a mock loop for demonstration
         # for device in range(1, 5):
-            # temperature = mock_temperature.value
+        #     sleep(0.1)
 
-            # Decrease temperature button
-            decrease_button = ft.IconButton(
-                icon=ft.icons.REMOVE,
-                icon_color='#FFC107',
-                on_click=minus_click
+        for device in search_devices():
+            print(device.name, device.ip)
+
+            decrease_button = ft.IconButton(icon=ft.icons.REMOVE, icon_size=50, icon_color='#FFC107',
+                                            on_click=minus_click)
+            increase_button = ft.IconButton(icon=ft.icons.ADD, icon_size=50, icon_color='#FFC107', on_click=plus_click)
+            toggleonoff = ft.IconButton(
+                icon=ft.icons.POWER_SETTINGS_NEW,
+                selected_icon=ft.icons.POWER_SETTINGS_NEW,
+                on_click=toggle_icon_button,
+                selected=False,
+                icon_size=50,
+                style=ft.ButtonStyle(bgcolor={"selected": ft.colors.BLUE_200, "": ft.colors.WHITE}),
             )
 
-            # Increase temperature button
-            increase_button = ft.IconButton(
-                icon=ft.icons.ADD,
-                icon_color='#FFC107',
-                on_click=plus_click
-            )
-
-            # AC Controls
             ac_column = ft.Column(
                 controls=[
-                    ft.Text(
-                        f"AC-IP: {device.ip}, AC ID: {device.id}, AC Name: {device.name}",
-                        # f"AC-IP: {device}, AC ID: {device}, AC Name: {device}",
-                        size=20,
-                        text_align=ft.TextAlign.CENTER,
-                    ),
-                    # ft.Text(
-                    #     f"Temperature: {mock_temperature.value}°C",
-                    #     size=24,
-                    #     text_align=ft.TextAlign.CENTER,
-                    # ),
 
-                    #add text filed
-                    mock_temperature,
+                    ft.Text(f"AC-IP: {device.ip}, AC ID: {device.id}, AC Name: {device.name}", size=20,
+                            text_align=ft.alignment.center),
+                    ft.Row(controls=[dd], alignment=ft.MainAxisAlignment.CENTER),
 
-                    #add icon button
-                    ft.Row(
-                        controls=[decrease_button, increase_button],
-                        alignment=ft.alignment.center
-                    )
+                    ft.Row(controls=[decrease_button, mock_temperature, increase_button],
+                           alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Row(controls=[toggleonoff], alignment=ft.MainAxisAlignment.CENTER),
+
                 ],
-                alignment=ft.alignment.center,
+
                 spacing=20
+
             )
 
-            # tab = ft.Tab(text=device, icon=ft.icons.AC_UNIT, content=ac_column)
-
-
-            tab = ft.Tab(text=device.name, icon=ft.icons.AC_UNIT, content=ac_column)
-            t.tabs.append(tab)
             page.update()
 
+            tab = ft.Tab(text=str(device.ip), content=ac_column)
+            t.tabs.append(tab)
+
         t.selected_index = 0
+        pb.visible = False
         page.update()
 
-    search_button = ft.ElevatedButton(  # Keeping this as an ElevatedButton as it has a text label
+    search_button = ft.ElevatedButton(
         text="Search AC's",
         width=150,
         height=60,

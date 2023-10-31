@@ -20,11 +20,13 @@ class ScanResult:
     id = ''
     name = '<unknown>'
 
+
     def __init__(self, ip, port, id, name=''):
         self.ip = ip
         self.port = port
         self.id = id
         self.name = name
+
 
 
 def send_data(ip, port, data):
@@ -83,7 +85,7 @@ def encrypt_generic(pack):
 
 def search_devices(broadcast=None):
     if broadcast is None:
-        broadcast = '192.168.1.255'
+        broadcast = '192.168.0.255'
     print(f'Searching for devices using broadcast address: {broadcast}')
 
     s = socket.socket(type=socket.SOCK_DGRAM, proto=socket.IPPROTO_UDP)
@@ -122,6 +124,7 @@ def search_devices(broadcast=None):
 
     if len(results) > 0:
         for r in results:
+            print(f'r in result: {r}')
             bind_device(r)
 
     return results
@@ -152,6 +155,7 @@ def bind_device(search_result) -> tuple[Any, Any, Any, Any]:
             key = bind_resp['key']
             print('Bind to %s succeeded, key = %s' % (search_result.id, key))
             return key
+
 
 
 def get_param(id, key, ipclient, params=None):

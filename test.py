@@ -1,14 +1,14 @@
 from time import sleep
-import matplotlib.pyplot as plt
+
 
 import flet as ft
 
 
-# from ewpe import search_devices, bind_device  # Commented for demonstration
+from ewpe import search_devices, bind_device  # Commented for demonstration
 
 
 def main(page: ft.Page):
-    page.window_width = 450
+    page.window_width = 500
 
     # Configure the page
     page.theme_mode = 'light'
@@ -38,21 +38,24 @@ def main(page: ft.Page):
     t = ft.Tabs(
         selected_index=0,
         animation_duration=300,
-        width=440,
+        # width=440,
         indicator_tab_size=True,
-        scrollable=True,
+        scrollable=False,
         tabs=[]
     )
     page.add(t)
 
     mock_temperature = ft.TextField(value=f'25', border_width=0,
-                                    text_size=25, text_align=ft.TextAlign.CENTER)
+                                    text_size=25, width=55, text_align=ft.TextAlign.CENTER)
 
-    dd = ft.Dropdown(text_size=20, options=[
-        ft.dropdown.Option("Cool"),
-        ft.dropdown.Option("Heat"),
-        ft.dropdown.Option("Dry"),
-    ])
+    dd = ft.Dropdown(text_size=20, width=75, hint_text='Mode',
+                     height=60, border_width=0.2,
+                     options=[
+                         ft.dropdown.Option("Auto"),
+                         ft.dropdown.Option("Dry"),
+                         ft.dropdown.Option("Cool"),
+                         ft.dropdown.Option("Heat"),
+                     ])
 
     def minus_click(e):
         mock_temperature.value = str(int(mock_temperature.value) - 1)
@@ -73,13 +76,16 @@ def main(page: ft.Page):
         t.tabs.clear()
 
         # Using a mock loop for demonstration
-        for device in range(1, 5):
-            sleep(0.1)
-            sw = ft.Switch(value=False)
+        # for device in range(1, 5):
+        #     sleep(0.1)
+
+        for device in search_devices():
+            print(device.name, device.ip)
+
             decrease_button = ft.IconButton(icon=ft.icons.REMOVE, icon_size=50, icon_color='#FFC107',
                                             on_click=minus_click)
             increase_button = ft.IconButton(icon=ft.icons.ADD, icon_size=50, icon_color='#FFC107', on_click=plus_click)
-            battryicon = ft.IconButton(
+            toggleonoff = ft.IconButton(
                 icon=ft.icons.POWER_SETTINGS_NEW,
                 selected_icon=ft.icons.POWER_SETTINGS_NEW,
                 on_click=toggle_icon_button,
@@ -91,28 +97,23 @@ def main(page: ft.Page):
             ac_column = ft.Column(
                 controls=[
 
-                    ft.Text(f"AC-IP: {device}, AC ID: {device}, AC Name: {device}", size=20,
+                    ft.Text(f"AC-IP: {device.ip}, AC ID: {device.id}, AC Name: {device.name}", size=20,
                             text_align=ft.alignment.center),
-                    ft.Row(controls=[sw], alignment=ft.MainAxisAlignment.CENTER),
-                    ft.Row(controls=[mock_temperature], alignment=ft.MainAxisAlignment.CENTER),
-                    ft.Row(controls=[decrease_button, increase_button], alignment=ft.MainAxisAlignment.CENTER),
-                    ft.Row(controls=[battryicon], alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Row(controls=[dd], alignment=ft.MainAxisAlignment.CENTER),
+
+                    ft.Row(controls=[decrease_button, mock_temperature, increase_button],
+                           alignment=ft.MainAxisAlignment.CENTER),
+                    ft.Row(controls=[toggleonoff], alignment=ft.MainAxisAlignment.CENTER),
 
                 ],
+
                 spacing=20
-            )
 
-            button_column = ft.Column(
-
-                controls=[
-                    ft.Row(controls=[battryicon], alignment=ft.MainAxisAlignment.CENTER
-                           )
-                ]
             )
 
             page.update()
 
-            tab = ft.Tab(text=str(device), icon=ft.icons.AC_UNIT, content=ac_column)
+            tab = ft.Tab(text=str(device.ip), content=ac_column)
             t.tabs.append(tab)
 
         t.selected_index = 0
