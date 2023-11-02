@@ -80,18 +80,20 @@ def main(page: ft.Page):
         #     sleep(0.1)
 
         for device in search_devices():
-            print(device.name, device.ip)
+            print(device.name, device.ip, )
 
-            decrease_button = ft.IconButton(icon=ft.icons.REMOVE, icon_size=50, icon_color='#FFC107',
-                                            on_click=minus_click)
-            increase_button = ft.IconButton(icon=ft.icons.ADD, icon_size=50, icon_color='#FFC107', on_click=plus_click)
+            decrease_button = ft.IconButton(
+                icon=ft.icons.REMOVE, icon_size=50, icon_color='#FFC107', on_click=minus_click)
+            increase_button = ft.IconButton(
+                icon=ft.icons.ADD, icon_size=50, icon_color='#FFC107', on_click=plus_click)
+
             toggleonoff = ft.IconButton(
                 icon=ft.icons.POWER_SETTINGS_NEW,
                 selected_icon=ft.icons.POWER_SETTINGS_NEW,
                 on_click=toggle_icon_button,
                 selected=False,
                 icon_size=50,
-                style=ft.ButtonStyle(bgcolor={"selected": ft.colors.BLUE_200, "": ft.colors.WHITE}),
+                style=ft.ButtonStyle(bgcolor={"selected": ft.colors.LIGHT_BLUE_50, "": ft.colors.WHITE}),
             )
 
             ac_column = ft.Column(
@@ -100,7 +102,6 @@ def main(page: ft.Page):
                     ft.Text(f"AC-IP: {device.ip}, AC ID: {device.id}, AC Name: {device.name}", size=20,
                             text_align=ft.alignment.center),
                     ft.Row(controls=[dd], alignment=ft.MainAxisAlignment.CENTER),
-
                     ft.Row(controls=[decrease_button, mock_temperature, increase_button],
                            alignment=ft.MainAxisAlignment.CENTER),
                     ft.Row(controls=[toggleonoff], alignment=ft.MainAxisAlignment.CENTER),

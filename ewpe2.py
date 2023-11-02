@@ -7,6 +7,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 import json
 import socket
+from writejson import write_json_to_file
 
 GENERIC_KEY = "a3K8Bx%2r8Y7#xDh"
 
@@ -52,6 +53,9 @@ def add_pkcs7_padding(data):
 
 
 def create_cipher(key):
+    print(f"create_cipher: {key}")
+    this = Cipher(algorithms.AES(key.encode('utf-8')), modes.ECB(), backend=default_backend())
+    print(f"Cipher aes encode {this}")
     return Cipher(algorithms.AES(key.encode('utf-8')), modes.ECB(), backend=default_backend())
 
 
@@ -79,6 +83,7 @@ def encrypt(pack, key):
 
 
 def encrypt_generic(pack):
+    print(f"pack: {pack}")
     return encrypt(pack, GENERIC_KEY)
 
 
@@ -108,9 +113,6 @@ def search_devices(broadcast=None):
             resp = json.loads(raw_json)
             # print(f'resp: {resp}')
             pack = json.loads(decrypt_generic(resp['pack']))
-            # print(f'pack: {pack}')
-            with open('ac.json', 'a') as file:
-                json.dump(pack, file)
 
             cid = pack['cid'] if 'cid' in pack and len(pack['cid']) > 0 else \
                 resp['cid'] if 'cid' in resp else '<unknown-cid>'
@@ -123,7 +125,7 @@ def search_devices(broadcast=None):
 
     if len(results) > 0:
         for r in results:
-            # print(f'r in result: {r}')
+
             bind_device(r)
 
     return results
@@ -135,13 +137,13 @@ def bind_device(search_result) -> tuple[Any, Any, Any, Any]:
 
     pack = '{"mac":"%s","t":"bind","uid":0}' % search_result.id
     pack_encrypted = encrypt_generic(pack)
-    # print(f'pack_encrypted: {pack_encrypted}')
+    print(f'pack_encrypted: {pack_encrypted}')
 
     request = create_request(search_result.id, pack_encrypted, i=1)
     result = send_data(search_result.ip, 7000, bytes(request, encoding='utf-8'))
 
     response = json.loads(result)
-    # print(f'response: {response}')
+    print(f'response: {response}')
     if response["t"] == "pack":
         pack = response["pack"]
         pack_decrypted = decrypt_generic(pack)
@@ -153,6 +155,7 @@ def bind_device(search_result) -> tuple[Any, Any, Any, Any]:
         if 't' in bind_resp and bind_resp["t"].lower() == "bindok":
             key = bind_resp['key']
             print('Bind to %s succeeded, key = %s' % (search_result.id, key))
+            write_json_to_file(ip=search_result.ip, mac=search_result.name, key=key )
             return key
 
 
