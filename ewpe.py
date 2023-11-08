@@ -7,10 +7,12 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 import json
 import socket
+from writejson import *
 
 GENERIC_KEY = "a3K8Bx%2r8Y7#xDh"
 
-paramlist: list[str] = ["Pow", "Mod", "SetTem", "WdSpd", "Air", "Blo", "Health", "SwhSlp", "Lig", "SwingLfRig", "SwUpDn","Quiet", "Tur", "StHt", "TemUn", "HeatCoolType", "TemRec", "SvSt"]
+paramlist: list[str] = ["Pow", "Mod", "SetTem", "WdSpd", "Air", "Blo", "Health", "SwhSlp", "Lig", "SwingLfRig",
+                        "SwUpDn", "Quiet", "Tur", "StHt", "TemUn", "HeatCoolType", "TemRec", "SvSt"]
 
 
 class ScanResult:
@@ -19,13 +21,11 @@ class ScanResult:
     id = ''
     name = '<unknown>'
 
-
     def __init__(self, ip, port, id, name=''):
         self.ip = ip
         self.port = port
         self.id = id
         self.name = name
-
 
 
 def send_data(ip, port, data):
@@ -109,8 +109,7 @@ def search_devices(broadcast=None):
             # print(f'resp: {resp}')
             pack = json.loads(decrypt_generic(resp['pack']))
             # print(f'pack: {pack}')
-            with open('ac.json', 'a') as file:
-                json.dump(pack, file)
+
 
             cid = pack['cid'] if 'cid' in pack and len(pack['cid']) > 0 else \
                 resp['cid'] if 'cid' in resp else '<unknown-cid>'
@@ -122,39 +121,40 @@ def search_devices(broadcast=None):
             break
 
     if len(results) > 0:
+
         for r in results:
-            # print(f'r in result: {r}')
             bind_device(r)
+
+        writetofile()
 
     return results
 
 
 def bind_device(search_result) -> tuple[Any, Any, Any, Any]:
-
     print(f'Binding device: {search_result.ip} ({search_result.name}, ID: {search_result.id})\n')
 
     pack = '{"mac":"%s","t":"bind","uid":0}' % search_result.id
     pack_encrypted = encrypt_generic(pack)
-    # print(f'pack_encrypted: {pack_encrypted}')
 
     request = create_request(search_result.id, pack_encrypted, i=1)
     result = send_data(search_result.ip, 7000, bytes(request, encoding='utf-8'))
 
     response = json.loads(result)
-    # print(f'response: {response}')
+
     if response["t"] == "pack":
         pack = response["pack"]
         pack_decrypted = decrypt_generic(pack)
-        # print(f'pack_decrypted: {pack_decrypted}\n')
 
         bind_resp = json.loads(pack_decrypted)
         print(f'bind_resp: {bind_resp}')
 
         if 't' in bind_resp and bind_resp["t"].lower() == "bindok":
             key = bind_resp['key']
+
+            write_jsontolist(ip=search_result.ip, mac=search_result.name, key=key)
+
             print('Bind to %s succeeded, key = %s' % (search_result.id, key))
             return key
-
 
 
 def get_param(id, key, ipclient, params=None):
@@ -209,9 +209,6 @@ def set_param(id, key, ipclient, params=""):
 
         pack_decrypted = decrypt(pack, key)
         pack_json = json.loads(pack_decrypted)
-
-        # dump data to file
-        # pack_json.json()
 
         if pack_json['r'] == 200:
             print('Parameter set successfully')

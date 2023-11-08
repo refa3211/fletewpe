@@ -1,4 +1,1 @@
-{"ip": "192.168.0.33", "mac": "1edd7874", "key": "5Mn8Pq1St4Vw7Yz0"},
-{"ip": "192.168.0.32", "mac": "1edec76e", "key": "9Op2Rs5Uv8Xy1Ab4"},
-{"ip": "192.168.0.31", "mac": "1ee06ac5", "key": "9Gh2Jk5Mn8Pq1St4"},
-{"ip": "192.168.0.30", "mac": "1ee065e0", "key": "2Lm5Op8Rs1Uv4Xy7"}
+[{"ip": "192.168.0.32", "mac": "1edec76e", "key": "9Op2Rs5Uv8Xy1Ab4"}, {"ip": "192.168.0.30", "mac": "1ee065e0", "key": "2Lm5Op8Rs1Uv4Xy7"}, {"ip": "192.168.0.33", "mac": "1edd7874", "key": "5Mn8Pq1St4Vw7Yz0"}]
