@@ -83,51 +83,52 @@ def encrypt_generic(pack):
 
 
 def search_devices(broadcast=None):
-    if broadcast is None:
-        broadcast = '192.168.0.255'
-    print(f'Searching for devices using broadcast address: {broadcast}')
+    if len(datalist) == 0:
+        if broadcast is None:
+            broadcast = '192.168.0.255'
+        print(f'Searching for devices using broadcast address: {broadcast}')
 
-    s = socket.socket(type=socket.SOCK_DGRAM, proto=socket.IPPROTO_UDP)
-    s.settimeout(5)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-    s.sendto(b'{"t":"scan"}', (broadcast, 7000))
+        s = socket.socket(type=socket.SOCK_DGRAM, proto=socket.IPPROTO_UDP)
+        s.settimeout(5)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        s.sendto(b'{"t":"scan"}', (broadcast, 7000))
 
-    results = []
+        results = []
 
-    while True:
-        try:
-            (data, address) = s.recvfrom(1024)
-            # print(f'data: {data}\nadderss: {address[0]}')
+        while True:
+            try:
+                (data, address) = s.recvfrom(1024)
+                if len(data) == 0:
+                    continue
 
-            if len(data) == 0:
-                continue
+                raw_json = data[0:data.rfind(b"}") + 1]
 
-            raw_json = data[0:data.rfind(b"}") + 1]
-
-            resp = json.loads(raw_json)
-            # print(f'resp: {resp}')
-            pack = json.loads(decrypt_generic(resp['pack']))
-            # print(f'pack: {pack}')
+                resp = json.loads(raw_json)
+                # print(f'resp: {resp}')
+                pack = json.loads(decrypt_generic(resp['pack']))
+                # print(f'pack: {pack}')
 
 
-            cid = pack['cid'] if 'cid' in pack and len(pack['cid']) > 0 else \
-                resp['cid'] if 'cid' in resp else '<unknown-cid>'
+                cid = pack['cid'] if 'cid' in pack and len(pack['cid']) > 0 else \
+                    resp['cid'] if 'cid' in resp else '<unknown-cid>'
 
-            results.append(ScanResult(address[0], address[1], cid, pack['name'] if 'name' in pack else '<unknown>'))
+                results.append(ScanResult(address[0], address[1], cid, pack['name'] if 'name' in pack else '<unknown>'))
 
-        except socket.timeout:
-            print(f'Search finished, found {len(results)} device(s)')
-            break
+            except socket.timeout:
+                print(f'Search finished, found {len(results)} device(s)')
+                break
 
-    if len(results) > 0:
+        if len(results) > 0:
 
-        for r in results:
-            bind_device(r)
+            for r in results:
+                bind_device(r)
 
-        writetofile()
+            writetofile()
 
-    return results
+        return results
+    else:
+        return datalist
 
 
 def bind_device(search_result) -> tuple[Any, Any, Any, Any]:

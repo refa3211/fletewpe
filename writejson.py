@@ -32,7 +32,7 @@ def writetofile(filename='ac.json'):
     global datalist
 
     try:
-        with open(filename, 'a') as file:
+        with open(filename, 'w') as file:
             json.dump(datalist, file)
     except Exception as e:
         print(f"an error {e}")

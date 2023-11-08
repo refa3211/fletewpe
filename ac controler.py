@@ -29,6 +29,8 @@ def main(page: ft.Page):
     )
     page.add(broadcast)
 
+
+
     # ProgressBar
     pb = ft.ProgressBar(width=300, height=10, color='#4CAF50')
     page.add(pb)
@@ -44,6 +46,7 @@ def main(page: ft.Page):
         tabs=[]
     )
     page.add(t)
+
 
     mock_temperature = ft.TextField(value=f'25', border_width=0,
                                     text_size=25, width=55, text_align=ft.TextAlign.CENTER)
@@ -74,6 +77,8 @@ def main(page: ft.Page):
         pb.visible = True
         page.update()
         t.tabs.clear()
+
+
 
         # Using a mock loop for demonstration
         # for device in range(1, 5):
