@@ -146,7 +146,7 @@ def bind_device(search_result) -> tuple[Any, Any, Any, Any]:
         pack_decrypted = decrypt_generic(pack)
 
         bind_resp = json.loads(pack_decrypted)
-        print(f'bind_resp: {bind_resp}')
+        # print(f'bind_resp: {bind_resp}')
 
         if 't' in bind_resp and bind_resp["t"].lower() == "bindok":
             key = bind_resp['key']
